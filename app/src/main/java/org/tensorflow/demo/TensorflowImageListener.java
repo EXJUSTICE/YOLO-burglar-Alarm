@@ -19,6 +19,7 @@ limitations under the License.
 
 package org.tensorflow.demo;
 
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -30,6 +31,7 @@ import android.media.ImageReader;
 import android.media.ImageReader.OnImageAvailableListener;
 import android.os.Handler;
 import android.os.Trace;
+import android.widget.Toast;
 
 import junit.framework.Assert;
 
@@ -38,7 +40,7 @@ import org.tensorflow.demo.env.Logger;
 
 import java.util.List;
 
-/**
+/**This file is the umbrella handling all image detection
  * Class that takes in preview frames and converts the image to Bitmaps to process with Tensorflow.
  */
 class TensorFlowImageListener implements OnImageAvailableListener {
@@ -77,17 +79,20 @@ class TensorFlowImageListener implements OnImageAvailableListener {
   private boolean computing = false;
   private boolean readyForNextImage = true;
   private Handler handler;
+  private Context context;
 
   private RecognitionScoreView scoreView;
   private BoundingBoxView boundingView;
-
+  //constructor
   public void initialize(
       final AssetManager assetManager,
       final RecognitionScoreView scoreView,
       final BoundingBoxView boundingView,
       final Handler handler,
-      final Integer sensorOrientation) {
+      final Integer sensorOrientation,
+      Context context) {
     Assert.assertNotNull(sensorOrientation);
+
     tensorflow.initializeTensorFlow(
         assetManager, MODEL_FILE, LABEL_FILE, NUM_CLASSES, INPUT_SIZE, IMAGE_MEAN, IMAGE_STD,
         INPUT_NAME, OUTPUT_NAME);
@@ -95,6 +100,7 @@ class TensorFlowImageListener implements OnImageAvailableListener {
     this.boundingView = boundingView;
     this.handler = handler;
     this.sensorOrientation = sensorOrientation;
+    this.context=context;
   }
 
   private void drawResizedBitmap(final Bitmap src, final Bitmap dst) {
@@ -200,7 +206,8 @@ class TensorFlowImageListener implements OnImageAvailableListener {
     if (SAVE_PREVIEW_BITMAP) {
       ImageUtils.saveBitmap(croppedBitmap);
     }
-
+    //TODO set the results for both the scoreView and BoundingView in a secondary thread
+    //Added our own bounding method.
     handler.post(
         new Runnable() {
           @Override
@@ -210,6 +217,8 @@ class TensorFlowImageListener implements OnImageAvailableListener {
             LOGGER.v("%d results", results.size());
             for (final Classifier.Recognition result : results) {
               LOGGER.v("Result: " + result.getTitle());
+              //Toast Works
+              Toast.makeText(context,result.getTitle() + " detected",Toast.LENGTH_SHORT).show();
             }
             scoreView.setResults(results);
             boundingView.setResults(results);

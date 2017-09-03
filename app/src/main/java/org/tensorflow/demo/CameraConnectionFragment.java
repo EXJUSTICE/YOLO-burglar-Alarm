@@ -1,6 +1,7 @@
 /*
  * Copyright 2014 The Android Open Source Project
- *
+ * Need to add in Email Sending capability using Javamail
+ * TODO https://stackoverflow.com/questions/2020088/sending-email-in-android-using-javamail-api-without-using-the-default-built-in-a/2033124#2033124
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -574,8 +575,9 @@ public class CameraConnectionFragment extends Fragment {
     }
 
     LOGGER.i("Getting assets.");
+    //Initializing The actual detection happens here
     tfPreviewListener.initialize(
-        getActivity().getAssets(), scoreView, boundingBoxView, inferenceHandler, sensorOrientation);
+        getActivity().getAssets(), scoreView, boundingBoxView, inferenceHandler, sensorOrientation,getActivity());
     LOGGER.i("TensorFlow initialized.");
   }
 

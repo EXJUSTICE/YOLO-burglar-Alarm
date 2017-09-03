@@ -18,6 +18,8 @@ import org.tensorflow.demo.TensorFlowImageListener;
 
 import java.util.List;
 
+//TODO Custom Box View to wrap around each detection
+
 public class BoundingBoxView extends View {
     private List<Recognition> results;
     private final Paint fgPaint, bgPaint, textPaint, trPaint;
