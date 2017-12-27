@@ -4,4 +4,10 @@ Originally based on Android YOLO adaptation by nathaniel ruiz.
 Original project here
 https://github.com/natanielruiz/android-yolo
 
-Work in progress
+TBA: 
+- Database of successful tracks
+- Handling of person tracked /(capturescreen command)
+- Messaging users/ Settings menu
+- Making it pretty.
+
+
